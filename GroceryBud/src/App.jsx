@@ -38,6 +38,10 @@ function App() {
     setList(list.filter((item) => item.id != id));
   };
 
+  const clearList = () => {
+    setList([])
+  }
+
   return (
     <section>
       <form onSubmit={handleSubmit}>
@@ -55,7 +59,9 @@ function App() {
       {list.length > 0 && (
         <div>
           <List items={list} removeItem={removeItem} />
-          <button>Clear Items</button>
+          <button
+          onClick={clearList}
+          >Clear Items</button>
         </div>
       )}
     </section>
