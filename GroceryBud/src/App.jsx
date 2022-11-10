@@ -12,7 +12,7 @@ const getLocalStorage = () => {
 };
 
 function App() {
-  const [list, setList] = useState("");
+  const [list, setList] = useState(getLocalStorage());
   const [name, setName] = useState("");
 
   const handleSubmit = (e) => {
