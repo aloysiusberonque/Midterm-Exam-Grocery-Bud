@@ -1,16 +1,22 @@
 import React from "react";
 
-function List() {
-    return(
-        <div>
-          <article className="article-container">
-            <p>Eggs</p>
+const List = ({ items }) => {
+  return (
+    <div>
+      {items.map((item) => {
+        const { id, title } = item;
+        return (
+          <article className="article-container" key={id}>
+            <p>{title}</p>
             <div>
               <button>Edit</button>
               <button>Delete</button>
             </div>
           </article>
-        </div>)
-}
+        );
+      })}
+    </div>
+  );
+};
 
 export default List;
