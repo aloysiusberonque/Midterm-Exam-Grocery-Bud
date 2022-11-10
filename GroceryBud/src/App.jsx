@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import List from "./List";
+import Modal from "./Modal";
 import "./App.css";
 
 const getLocalStorage = () => {
@@ -17,6 +18,8 @@ function App() {
   const [name, setName] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editID, setEditID] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalMode, setModalMode] = useState(0);
 
   useEffect(() => {
     // Local Storage format = (keyname, value)
@@ -28,10 +31,14 @@ function App() {
     // To prevent the default state after submitting
     e.preventDefault();
     if (!name) {
+      setModalMode(3);
+      setOpenModal(true);
     } else if (name && isEditing) {
       setList(
         list.map((item) => {
           if (item.id === editID) {
+            setModalMode(5);
+            setOpenModal(true);
             return { ...item, title: name };
           }
           return item;
@@ -44,6 +51,8 @@ function App() {
       const newItem = { id: new Date().getTime().toString(), title: name };
 
       setList([...list, newItem]);
+      setModalMode(1);
+      setOpenModal(true);
       setName("");
     }
     // Backup Function: localStorage.clear();
@@ -52,10 +61,14 @@ function App() {
   const removeItem = (id) => {
     // Filter: Anything that is not equal to item.id remains
     setList(list.filter((item) => item.id != id));
+    setModalMode(2);
+    setOpenModal(true);
   };
 
   const clearList = () => {
     setList([]);
+    setModalMode(4);
+    setOpenModal(true);
   };
 
   const editItem = (id) => {
@@ -67,6 +80,11 @@ function App() {
 
   return (
     <section>
+      <Modal
+        open={openModal}
+        mode={modalMode}
+        onClose={() => setOpenModal(false)}
+      />
       <form onSubmit={handleSubmit}>
         <h3>Grocery Bud</h3>
         <div>
@@ -76,12 +94,12 @@ function App() {
             value={name}
             onChange={(e) => setName(e.target.value)}
           ></input>
-          <button>Submit</button>
+          <button type="submit">{isEditing ? "Edit" : "Submit"}</button>
         </div>
       </form>
       {list.length > 0 && (
         <div>
-          <List items={list} removeItem={removeItem} editItem={editItem}/>
+          <List items={list} removeItem={removeItem} editItem={editItem} />
           <button onClick={clearList}>Clear Items</button>
         </div>
       )}
