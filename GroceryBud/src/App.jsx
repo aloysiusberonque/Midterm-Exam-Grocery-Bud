@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import List from "./List";
 import Modal from "./Modal";
 import "./App.css";
+import background from "./assets/bg_image.jpg";
 
 const getLocalStorage = () => {
   let list = localStorage.getItem("list");
@@ -78,29 +79,44 @@ function App() {
     setName(specificItem.title);
   };
 
+  const modalTimer = () => {
+    if (openModal == true) {
+      setTimeout(() => {
+        setOpenModal(false);
+      }, 2000);
+    }
+  };
+
   return (
-    <section>
+    <section className="section-center">
+      {modalTimer()}
       <Modal
         open={openModal}
         mode={modalMode}
+        showOverlay={false}
         onClose={() => setOpenModal(false)}
       />
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="grocery-form">
         <h3>Grocery Bud</h3>
-        <div>
+        <div className="form-control">
           <input
             type="text"
             placeholder="e.g. apples"
             value={name}
+            className="grocery"
             onChange={(e) => setName(e.target.value)}
           ></input>
-          <button type="submit">{isEditing ? "Edit" : "Submit"}</button>
+          <button type="submit" className="submit-btn">
+            {isEditing ? "Edit" : "Submit"}
+          </button>
         </div>
       </form>
       {list.length > 0 && (
-        <div>
+        <div className="grocery-container">
           <List items={list} removeItem={removeItem} editItem={editItem} />
-          <button onClick={clearList}>Clear Items</button>
+          <button onClick={clearList} className="clear-btn">
+            Clear Items
+          </button>
         </div>
       )}
     </section>
