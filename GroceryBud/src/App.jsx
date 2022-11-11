@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import List from "./List";
 import Modal from "./Modal";
 import "./App.css";
-import background from "./assets/bg_image.jpg";
 
 const getLocalStorage = () => {
   let list = localStorage.getItem("list");
